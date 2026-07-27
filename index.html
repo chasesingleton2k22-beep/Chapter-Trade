@@ -1443,6 +1443,11 @@ body.wide-mode #p-read::after{left:0}
 
 
 /* COMMUNITY MODE */
+#btn-edit,#btn-edit-all,#btn-update,#edit-bar,#btn-manuscript,
+.sb-drag,.sb-first-btn,#btn-mis-hl,#btn-ideas-hl,
+.add-para-btn{display:none!important}
+.tab:not([data-panel="p-read"]){opacity:.38;cursor:not-allowed;position:relative}
+.tab:not([data-panel="p-read"])::after{content:'';position:absolute;inset:0;cursor:not-allowed}
 .sb-item.locked{opacity:.45;cursor:default}
 .sb-item.locked .sb-title::after{content:' [locked]';font-size:8px;opacity:.55;letter-spacing:.08em}
 /* Blurred chapter overlay */
@@ -10422,7 +10427,15 @@ if ('serviceWorker' in navigator) {
 (function(){
   if(!window.COMMUNITY_MODE)return;
 
-  var FULLY_UNLOCKED=['opening', 'watching-britannia', 'chapter1', 'chapter2', 'chapter3', 'watching-taking', 'cole-fenton', 'brazos', 'watching-storm', 'ch-gloria', 'ch-arrival', 'ch-bonfire', 'watching1', 'watching2', 'charlotte', 'carter-watching', 'ch-initiation', 'ch-gunnar-cole', 'ch-ira', 'brittany', 'ch-keeper'];
+  var FULLY_UNLOCKED=['opening', 'watching1', 'chapter1', 'chapter2', 'chapter3', 'watching-taking', 'cole-fenton', 'brazos', 'ch-gloria', 'ch-arrival', 'ch-bonfire'];
+
+  /* 1. Block non-reading tab clicks */
+  document.addEventListener('click',function(e){
+    var tab=e.target.closest('.tab');
+    if(tab&&tab.getAttribute('data-panel')!=='p-read'){
+      e.stopImmediatePropagation();e.preventDefault();
+    }
+  },true);
 
   /* 2. Wrap bootApp */
   var _origBoot=window.bootApp;
